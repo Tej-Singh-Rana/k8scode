@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+     name: website
+     labels:
+        name: http-server
+spec:
+     replicas: 1
+     template:
+        metadata:
+            name: my-web
+            labels:
+                name: http-server
+        spec:
+             containers:
+              - name: website
+                image: index.docker.io/arch1250/myweb:v1
+                imagePullPolicy: Always
+             hostname: website  
+     selector:
+         matchLabels:
+              name: http-server

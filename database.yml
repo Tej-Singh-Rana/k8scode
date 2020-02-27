@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-server
+  labels:
+    app: mysql-env
+spec:
+  replicas: 1
+  strategy:
+     type: Recreate
+  selector:
+    matchLabels:
+      app: mysql-env
+  template:
+    metadata:
+      labels:
+        app: mysql-env
+        name: mysql
+    spec:
+      hostname: data
+      containers:
+      - image: index.docker.io/arch1250/sqlmy:v1
+        imagePullPolicy: Always
+        name: data
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: redhat123
+        - name: MYSQL_DATABASE
+          value: student
+        ports:
+        - containerPort: 3306
+          name: data
+        volumeMounts:
+        - name: db-folder
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: db-folder
+          emptyDir: {}
